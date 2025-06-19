@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, Link, NavLink } from 'react-router-dom';
+import languageStrings from '../translationFile';
 import { UserContext } from "../UserContext";
 import { logoutEndpoint } from '../endpoints';
 function TopBar(routes) {
-    console.log(routes)
     const {user, setUser} = useContext(UserContext);
+    const {language, setLanguage} = React.useContext(UserContext)
+    const text = languageStrings[language]['topBar'];
+
     const handleLogout = () => {
         fetch(logoutEndpoint, {
             method: 'POST',
@@ -14,15 +17,13 @@ function TopBar(routes) {
             credentials: 'include',
         });
     }
-    const logoutBtn = <button className="btn btn-danger" onClick={()=>{handleLogout();setUser(null);}}>Wyloguj się</button>;
-    const loginBtn = <Link to="/login" className="btn btn-primary">Zaloguj się</Link>;
+    const logoutBtn = <button className="btn btn-danger" onClick={()=>{handleLogout();setUser(null);}}>{text['logout']}</button>;
     return(
-        <nav className="navbar navbar-dark navbar-expand-lg bg-dark py-2 text-light">
-            {user!=null ? user.email : "Niezalogowano"}
-            <div className='container-fluid d-flex justify-content-between'>
+        <nav className="navbar navbar-light navbar-expand-lg bg-light text-dark px-3">
+            <Link class="navbar-brand border-end px-5" to="/">LogBook</Link>
+            <div className='collapse navbar-collapse' id="navbarNav">
                 <div>
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className='navbar-brand'>LogBook</li>
+                    <ul className="navbar-nav mr-auto mb-2 mb-lg-0">
                         {routes.routes.map((route, index) => {
                             if(!route.props.showInTopBar) return null;
                             return <li key={index} className='nav-item'>
@@ -31,13 +32,11 @@ function TopBar(routes) {
                         })}
                     </ul>
                 </div>
-                <div className="col-lg-2 px-4 text-end">
-                    {user===null ? loginBtn : logoutBtn}
-                </div>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
             </div>
+            {user?logoutBtn:""}
+            <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
         </nav>
     )
 }

@@ -3,11 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { loginEndpoint } from '../../endpoints';
 import { UserContext } from '../../UserContext';
+import languageStrings from '../../translationFile';
 
 function Login(props) {
     const [error, setError] = useState(null);
     const { user, setUser } = useContext(UserContext);
     const [processing, setProcessing] = useState(false);
+    const {language, setLanguage} = React.useContext(UserContext)
+    const text = languageStrings[language]['loginPage'];
     const navigate = useNavigate();
     const handleLogin = () => {
         setProcessing(true);
@@ -29,19 +32,54 @@ function Login(props) {
                 setUser(data.user);
                 navigate('/')
             } else {
-                setError(data.message['pl']);
+                setError(data.message[language]);
             }
         })
         .catch(error => {
             setProcessing(false);
-            setError('Wystąpił błąd podczas logowania. Spróbuj ponownie.');
+            setError(text['error']);
             console.error('Error:', error);
         });
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center">
-            <div className="card p-4 mt-5" style={{ width: '20rem' }}>
+        <div style={{ height: '100vh', overflowX: 'hidden' }}>
+            <div className='row'>
+                <div className='col-md-6 p-3'>
+                    <div className='position-relative d-flex flex-column justify-content-center align-items-center h-100 p-5'>
+                        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className='w-100'>
+                            <div className="mb-3">
+                                <label htmlFor="email" className="form-label">{text['email']}</label>
+                                <input type="email" className="form-control" id="email" />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="password" className="form-label">{text['password']}</label>
+                                <input type="password" className="form-control" id="password" />
+                            </div>
+                            <button type="submit" className="btn btn-primary w-100">{text['login']}</button>
+                            <span className="text-danger">{error || '\u00A0'}</span>
+                        {processing?<div className='position-absolute d-flex justify-content-center align-items-center bg-white w-100 h-100' style={{top:0, left: 0}}>
+                            <div className="spinner-border text-primary" role="status"></div>
+                        </div>: ""}
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+                <div className='col-md-6'>
+                    <div className='d-flex flex-column justify-content-center align-items-center h-100 p-5'>
+                        <p className='text-center'>{text['paragraph']}</p>
+                        <Link to="/register" className="btn btn-outline-primary mt-2">{text['register']}</Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Login;
+
+{/* <div className="card p-4 mt-5" style={{ width: '20rem' }}>
                 {processing?<div className="position-absolute top-0 start-0 rounded text-center" style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
                     <div class="spinner-border text-primary" style={{marginTop: '45%'}} role="status"></div>
                 </div>:""}
@@ -58,9 +96,4 @@ function Login(props) {
                     <button type="submit" className="btn btn-primary w-100">Zaloguj się</button>
                     <span className="text-danger">{error || '\u00A0'}</span>
                 </form>
-            </div>
-        </div>
-    );
-}
-
-export default Login;
+            </div> */}

@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerEndpoint } from "../../endpoints";
 function RegisterPage(){
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const validateData = () => {
         const email = document.getElementById("email").value;
@@ -28,6 +31,30 @@ function RegisterPage(){
         if(!validateData()) {
             return;
         }
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const passwordRepeat = document.getElementById("passwordRepeat").value;
+        if(password !== passwordRepeat) {
+            setError("Hasła nie są takie same.");
+            return;
+        }
+        fetch(registerEndpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || "Błąd rejestracji");
+                });
+            }
+            return response.json();
+        }).then(data => {
+            navigate("/login");
+        }
+        )
     }
 
     return (

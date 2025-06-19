@@ -1,0 +1,62 @@
+const languageStrings = {
+    "en":{
+        "pages":{
+            'main':'Main Page',
+            'login': 'Login',
+            'register': 'Register',
+            'logbook':'LogBook',
+            'addFlight': 'Add flight',
+            'myLicenses': 'My licenses',
+            'airplanes': 'Airplanes',
+            'addAirplane': 'Add airplane'
+        },
+        "topBar":{
+            "logout": "Logout",
+        },
+        "mainPage": {
+            "description": "Monitoring your flight hours could be easier with us!",
+            "giveUsATry": "Give us a try!",
+            "header1": "Discover the advantages of digital logbook",
+            "paragraph1": "Feel the difference with our digital logbook, designed to simplify and speed up the boring part of flying - The paperwork. ",
+            "paragraph2": "Our logbook is mostly self-filling. You just fill the most basic information, and the rest is done for you.",
+            "advantage1": "Time efficiency",
+            "header2" : "Every human makes mistakes, so",
+            "paragraph3" : "Our logbook calculates automatically all the necessary data, therefore it minimizes the risk of simple math erorrs.",
+            "paragraph4" : "You can also easily edit your entries, so you can be sure that everything is correct.",
+            "advantage2" : "Low risk of errors",
+            "header3" : "We know that the technology can fail",
+            "paragraph5" : "Even the best systems can fail, we are not an exception. Our system is designed to minimize the risk of data loss.",
+            "paragraph6" : "Our system also keeps sending you backups of your data, in form of compressed files, so you can access your data even if our system fails!",
+            "advantage3" : "Frequent backups",
+            "header4": "We are meant to be used by pilots,",
+            "advantage4": "Legal compliance",
+            "paragraph7": "So our product is designed to be compliant with EASA regulations, so you can be sure that your logbook is valid.",
+            "paragraph8": "Logbook filed with us is valid in all EASA member states, so you can use it anywhere in Europe.",
+        },
+        "loginPage":{
+            "login" : "Login",
+            "password" : "Password",
+            "email" : "E-mail address",
+            "error" : "An error occurred while logging in. Please try again.",
+            "paragraph":"To use our logbook, you need to be registered",
+            "register":"Register",
+        },
+        "airplanesPage":{
+            "myPlanes": "My planes",
+            "myPlanesParagraph" : "You can simply add planes, that you usually fly! ",
+            "clickToAdd" : "Click here to add an airplane!",
+            "add": "Add",
+            "type": "Type",
+            "registration": "Registration",
+            "owner": "Owner",
+            "price": "Price per hour",
+            "category": "Category",
+            "addAirplane":"Add airplane",
+            "addAirplaneParagraph": "To do this, fill the form below."
+        }
+    },
+    "pl":{
+        "":"",
+    }
+}
+export default languageStrings;

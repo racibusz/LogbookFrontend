@@ -121,7 +121,7 @@ function AddFlightAuto() {
             body: JSON.stringify(flight)
         });
         if (response.ok) {
-            navigate('/flights');
+            navigate('/logBook');
         } else {
             console.log('Error: ', response.status);
         }

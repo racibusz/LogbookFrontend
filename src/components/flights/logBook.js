@@ -19,7 +19,7 @@ function LogBook() {
     if (flightDeletionTimeout != null) {
       setFlightDeletionTimeout(
         setTimeout(() => {
-          setFlightToDelete(null);
+          setFlightToDelete(null);  
         }, 5000)
       );
     }
@@ -33,11 +33,11 @@ function LogBook() {
   const [summaryBeforePage, setSummaryBeforePage] = useState(null);
   const [summaryTotal, setSummaryTotal] = useState(null);
   useEffect(() => {
-    console.log(flightsEndpoint + page);
     fetch(flightsEndpoint + page, { credentials: "include" })
       .then((response) => {
         response.json().then((data) => {
-          setFlights(data.flights);
+          if(data.flights!=undefined)
+            setFlights(data.flights);
           setMaxPages(data.pageMax);
           setSummaryThisPage(data.summaryThisPage);
           setSummaryBeforePage(data.summaryBeforePage);
@@ -504,7 +504,8 @@ function LogBook() {
                       onClick={() => {
                         // Metoda na usuniecie
                         if (flightToDelete == index) {
-                          fetch(flightsEndpoint + "/" + flight.id, {
+                          console.log("Usuń " + flight.id)
+                          fetch(flightsEndpoint + flight.id, {
                             method: "DELETE",
                             credentials: "include",
                           })
@@ -614,7 +615,6 @@ function LogBook() {
                         }
                       }}
                     >
-                      {/* prawda, gdy editingFlight==null, falsz gdy editingFlight jest równy flight.id */}
                       {editingFlight == null ||
                         (editingFlight != null &&
                           editingFlight.id != flight.id) ? (
@@ -679,7 +679,7 @@ function LogBook() {
               <td>{summaryThisPage.instructorTime.split(":")[1]}</td>
               <td colSpan={2}></td>
             </tr>
-            ): <tr><td colSpan={30} className="text-center">Wprowadzono zmiany. Aby uzyskać podsumowanie, klitknij tutaj</td></tr>}
+            ): <tr><td colSpan={30} className="text-center">Podsumowanie niedostępne</td></tr>}
             {summaryBeforePage != null ? (
             <tr>
               <td colSpan={7} className="text-center">Suma z poprzednich stron</td>
