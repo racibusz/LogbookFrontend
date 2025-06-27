@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { flightsEndpoint } from "../../endpoints";
 import { useState } from "react";
 import BootstrapModal from "../bootstrapModal";
+import { Link } from "react-router-dom";
 import { flightsModifyEndpoint } from "../../endpoints";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +38,10 @@ function LogBook() {
       .then((response) => {
         response.json().then((data) => {
           if(data.flights!=undefined)
+          {
+            console.log(data.flights)
             setFlights(data.flights);
+          }
           setMaxPages(data.pageMax);
           setSummaryThisPage(data.summaryThisPage);
           setSummaryBeforePage(data.summaryBeforePage);
@@ -243,12 +247,12 @@ function LogBook() {
                   )}
                   {(editingFlight != null && editingFlight.id != flight.id) ||
                     editingFlight == null ? (
-                    <td>{flight.aircraftRegistration}</td>
+                    <td>{flight.airplane!=null?<Link className="text-dark" to={"/airplanes/"+flight.airplane.id}>{flight.airplane.registration}</Link>:flight.aircraftRegistration}</td>
                   ) : (
                     <td>
                       <input
                         type="text"
-                        defaultValue={flight.aircraftRegistration}
+                        defaultValue={flight.airplane!=null?flight.airplane.registration:flight.aircraftRegistration}
                         onInput={(e) => (flight.aircraftRegistration = e.target.value)}
                       ></input>
                     </td>
@@ -594,6 +598,7 @@ function LogBook() {
                         clearTimeout(flightDeletionTimeout);
                         if(editingFlight!=null && editingFlight.id==flight.id){
                           console.log(editingFlight);
+                          editingFlight.airplane = undefined;
                           fetch(flightsModifyEndpoint+editingFlight.id, {
                             method: "POST",
                             credentials: "include",
@@ -604,7 +609,7 @@ function LogBook() {
                           }).then((res) => {
                             if(res.ok){
                               setModalShow(true);
-                              setModalText("Zapisano zmiany");
+                              setModalText("Zapisano zmiany! Może być konieczne odświeżenie strony. Manualne zmiany nie są sprawdzane. Zaleca się sprawdzenie poprawności dokonanych modyfikacji");
                               setModalTitle("Komunikat");
                               setEditingFlight(null);
                               setSummaryThisPage(null);

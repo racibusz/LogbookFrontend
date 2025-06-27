@@ -28,47 +28,40 @@ function AirplanesPage(){
                         <p>{text['myPlanesParagraph']}</p>
                     </div>
                 </div>
-                <div className="row border rounded m-2 p-3">
-                    {airplanes.map((airplane, index)=>{
-                        console.log(airplane)
+                <div className="row m-2">
+                    {airplanes.length>0?airplanes.map((airplane, index)=>{
                         return(
-                        <div className="col-md-3 p-2 d-flex flex-column align-items-center">
-                            <h2>{airplane.registration}</h2>
-                            <table className="table table-striped">
-                                <tbody>
-                                    <tr>
-                                        <td>{text['type']}</td>
-                                        <td>{airplane.type}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{text['registration']}</td>
-                                        <td>{airplane.registration}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{text['owner']}</td>
-                                        <td>{airplane.owner}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{text['price']}</td>
-                                        <td>{airplane.pricePerHour}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{text['category']}</td>
-                                        <td>{airplane.model.category}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><Link to={"/airplanes/"+airplane.id}>{text['details']}</Link></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            <div className="col-md-3 position-relative " onClick={()=>{navigate('/airplanes/'+airplane.id)}}key={index} style={{backgroundImage: `url(${airplane.image})`, backgroundSize: 'cover', height: '200px', position: 'relative'}}>
+                            <div
+                                className="overlay p-2 d-flex justify-content-center align-items-center text-white"
+                                style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                background: '#333333',
+                                zIndex: 2,
+                                transition: 'opacity 0.3s ease',
+                                opacity: .8,
+                                cursor: 'pointer',
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.opacity = '0'}
+                                onMouseLeave={(e) => e.currentTarget.style.opacity= '.8'}
+                                >
+                                    <div className="text-center">
+                                        <h1>{airplane.model.model}</h1>
+                                        <h2>{airplane.registration}</h2>
+                                    </div>
+                                </div>
+                            </div>
                         )
-                    })}
+                    }):""}
 
-                        <div className="col-md-3 p-2 d-flex flex-column align-items-center justify-content-center position-relative bg-light" style={{ minHeight: '120px' }}
+                        <div className="col-md-3 d-flex flex-column align-items-center justify-content-center position-relative bg-light" style={{ height: '200px' }}
                         onClick={() => navigate('/addAirplane')}>
                         <div
-                            className="overlay d-flex justify-content-center align-items-center rounded"
+                            className="overlay d-flex justify-content-center align-items-center"
                             style={{
                             position: 'absolute',
                             top: 0,

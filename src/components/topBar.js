@@ -20,7 +20,7 @@ function TopBar(routes) {
     const logoutBtn = <button className="btn btn-danger" onClick={()=>{handleLogout();setUser(null);}}>{text['logout']}</button>;
     return(
         <nav className="navbar navbar-light navbar-expand-lg bg-light text-dark px-3">
-            <Link class="navbar-brand border-end px-5" to="/">LogBook</Link>
+            <Link className="navbar-brand border-end px-5" to="/">LogBook</Link>
             <div className='collapse navbar-collapse' id="navbarNav">
                 <div>
                     <ul className="navbar-nav mr-auto mb-2 mb-lg-0">

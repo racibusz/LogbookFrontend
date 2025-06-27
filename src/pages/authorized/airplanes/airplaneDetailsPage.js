@@ -23,6 +23,7 @@ function AirplaneDetailsPage(){
     useEffect(()=>{
         fetch(airplanesEndpoint+"/"+airplaneId, {method: 'GET', headers: {'Content-Type': 'application/json'}, credentials: 'include'})
         .then(response => response.json().then(data => {
+            data.category = data.model.category;
             data.model = data.model.model;
             setAirplane(data)
         }))
@@ -31,17 +32,24 @@ function AirplaneDetailsPage(){
 
         <div className="airplaneDetailsPage container">
             <div className="mt-3 row">
-                <div className="col-md-4 p-2 text-center border rounded">
-                    <img src={airplane.image} className="img-thumbnail"></img>
-                    <h1>{airplane.model}</h1>
-                    <h2>{airplane.registration}</h2>
+                <div className="col-md-4 p-2 border rounded">
+                    <div className="d-flex justify-content-between">
+                        <button className="btn btn-outline-secondary px-4" onClick={()=>{navigate(-1)}}>&lt; {text['back']}</button>
+                        <div className="d-flex flex-column align-items-center">
+                            <h1 className="text-center">{airplane.model}</h1>
+                            <h2 className="text-center">{airplane.registration}</h2>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <img src={airplane.image} className="img-thumbnail border-0"></img>
+                    </div>
                 </div>
                 <div className="col">
                     <table className="table table-striped">
                         <tbody>
                             <tr>
                                 <td>{text['model']}</td>
-                                {/* <td>{airplane['model']['model']}</td> */}
+                                <td>{airplane.model}</td>
                             </tr>
                             <tr>
                                 <td>{text['type']}</td>

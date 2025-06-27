@@ -56,7 +56,13 @@ const languageStrings = {
             "addAirplaneParagraph": "To do this, fill the form below.",
             'details': "Details",
             "model": "Model",
-            "chooseModel": "Choose model",
+            "chooseModel": "Enter model name of the aircraft",
+            "chooseType": "Enter type of the aircraft",
+            "chooseRegistration": "Enter registration",
+            "chooseOwner": "Enter owner of the aircraft",
+            "choosePrice": "Enter price per hour",
+            "imageUrl": "Image URL",
+            "chooseImageUrl": "Enter image URL",
         },
         "airplaneDetailsPage":{
             "type": "Type",
@@ -66,6 +72,7 @@ const languageStrings = {
             "category": "Category",
             "image": "Image URL:",
             "model": "Model",
+            "back": "Go Back",
         },
     },
     "pl":{

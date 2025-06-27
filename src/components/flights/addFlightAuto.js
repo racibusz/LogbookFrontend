@@ -1,7 +1,7 @@
 import { use, useEffect, useState } from "react";
 import BootstrapModal from "../bootstrapModal";
 import { useNavigate } from "react-router-dom";
-import { flightsEndpoint } from "../../endpoints";
+import { airplanesEndpoint, flightsEndpoint } from "../../endpoints";
 
 function AddFlightAuto() {
     const navigate = useNavigate();
@@ -22,6 +22,23 @@ function AddFlightAuto() {
     const [modalText, setModalText] = useState("");    
     const [picName, setPicName] = useState("");
     const [flightDate, setFlightDate] = useState("");
+
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [airplanes, setAirplanes] = useState([]);
+
+    useEffect(()=>{
+        if(aircraftRegistration === "") return;
+        fetch(airplanesEndpoint+"/registration/"+aircraftRegistration, {method: 'GET', headers: {'Content-Type': 'application/json'}, credentials: 'include'}).then((response)=>{
+            if(response.ok){
+                response.json().then((data)=>{
+                    setAirplanes(data);
+                    console.log(data);
+                })
+            } else {
+                setAircraftType("");
+            }
+        })
+    }, [aircraftRegistration])
     useEffect(()=>{if(modalShow){setModalShow(false)}}, [modalShow])
     useEffect(() => {
         console.log(departureTime, arrivalTime);
@@ -196,13 +213,57 @@ function AddFlightAuto() {
                         <tr>
                             <td className="p-2">Rejestracja</td>
                             <td className="p-2">
+                            <div className="dropdown" style={{ position: 'relative' }}>
                                 <input
-                                    className="form-control"
-                                    type="text"
-                                    name="aircraftRegistration"
-                                    value={aircraftRegistration}
-                                    onChange={(e) => setAircraftRegistration(e.target.value.toUpperCase())}
+                                type="text"
+                                className="form-control"
+                                value={aircraftRegistration}
+                                onFocus={() => setDropdownVisible(true)}
+                                onInput={(e) => {
+                                    const value = e.target.value.toUpperCase();
+                                    setAircraftRegistration(value);
+                                }}
+                                onBlur={() => setTimeout(() => setDropdownVisible(false), 200)}
+                                // placeholder={text['chooseModel']}
+                                id="aircraftInput"
+                                autoComplete="off"
                                 />
+                                <ul className={`dropdown-menu w-100 ${dropdownVisible ? 'show' : ''}`} id="aircraftList">
+                                {/* {models
+                                    .filter(model => model.model.toUpperCase().includes(modelName))
+                                    .map(model => (
+                                    <li key={model.id}>
+                                        <a
+                                        href="#"
+                                        className="dropdown-item"
+                                        onMouseDown={(e) => {
+                                            e.preventDefault();
+                                        }}
+                                        >
+                                        </a>
+                                    </li>
+                                    ))} */}
+                                    {airplanes.map((airplane) => (
+                                        <li key={airplane.id}>
+                                            <a
+                                                href="#"
+                                                className="dropdown-item"
+                                                onMouseDown={(e) => {
+                                                    e.preventDefault();
+                                                }}
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    setAircraftType(airplane.model.type);
+                                                    setAircraftRegistration(airplane.registration);
+                                                }}
+                                            >
+                                                {airplane.registration}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
                             </td>
                             <td className="p-2">Model</td>
                             <td className="p-2">

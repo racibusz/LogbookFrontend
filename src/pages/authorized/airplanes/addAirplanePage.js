@@ -15,7 +15,10 @@ function AddAirplanePage(){
     const [category, setCategory] = useState("");
     const [models, setModels] = useState([]);
     const [model, setModel] = useState("");
+    const [modelName, setModelName] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
 
+    const [dropdownVisible, setDropdownVisible] = useState(false);
     const addAirplane = async () => {
         if(type === "" || registration === "" || owner === "" || price === "" || category === ""){
             alert("NO EMPTY FIELDS")
@@ -27,6 +30,7 @@ function AddAirplanePage(){
             owner: owner,
             pricePerHour: price,
             category: category,
+            image: imageUrl
         })})
         navigate("/airplanes")
 
@@ -35,15 +39,24 @@ function AddAirplanePage(){
         if(type === "") return;
         fetch(airplanesEndpoint+"/type/"+type, {method: 'GET', headers: {'Content-Type': 'application/json'}, credentials: 'include'})
         .then(response => response.json().then(data => {
-            console.log(data)
             setModels(data)
-            // mamy pobrane modele samolotów, umożliwić wybór
+            setDropdownVisible(true);
         }))
     }, [type])
     useEffect(()=>{
         if(model === "") return;
         setCategory(models.find((m) => m.id == model).category);
+        setModelName(models.find((m) => m.id == model).model);
+        setType(models.find((m) => m.id == model).type);
     }, [model])
+    useEffect(()=>{
+        if(modelName === "") setModels([]);
+        if(modelName.length<3) return;
+        fetch(airplanesEndpoint+"/typenames/"+modelName, {method: 'GET', headers: {'Content-Type': 'application/json'}, credentials: 'include'}).then((response)=>{response.json().then((data)=>{
+            if(data.length == 0) return;
+            setModels(data);
+        })})
+    }, [modelName])
     return(
         <div className="addAirplanePage container">
             <div className="mt-3">
@@ -53,30 +66,66 @@ function AddAirplanePage(){
                     <tbody>
                         <tr>
                             <td>{text['type']}</td>
-                            <td><input type="text" value={type} onChange={(e) => setType(e.target.value.toUpperCase())} className="form-control"></input></td>
+                            <td><input type="text" value={type} placeholder={text['chooseType']} onChange={(e) => setType(e.target.value.toUpperCase())} className="form-control"></input></td>
                         </tr>
                         <tr>
                             <td>{text['model']}</td>
                             <td>
-                                <select class="form-select" onChange={(e)=>setModel(e.target.value)}>
-                                    <option selected>{text['chooseModel']}</option>
-                                    {models.map((model) => (
-                                        <option key={model.id} value={model.id}>{model.model}</option>
+                            <div className="dropdown" style={{ position: 'relative' }}>
+                                <input
+                                type="text"
+                                className="form-control"
+                                value={modelName}
+                                onFocus={() => setDropdownVisible(true)}
+                                onInput={(e) => {
+                                    const value = e.target.value.toUpperCase();
+                                    setModelName(value);
+                                    setDropdownVisible(true);
+                                }}
+                                onBlur={() => setTimeout(() => setDropdownVisible(false), 200)}
+                                placeholder={text['chooseModel']}
+                                id="aircraftInput"
+                                autoComplete="off"
+                                />
+                                <ul className={`dropdown-menu w-100 ${dropdownVisible ? 'show' : ''}`} id="aircraftList">
+                                {models
+                                    .filter(model => model.model.toUpperCase().includes(modelName))
+                                    .map(model => (
+                                    <li key={model.id}>
+                                        <a
+                                        href="#"
+                                        className="dropdown-item"
+                                        onMouseDown={(e) => {
+                                            e.preventDefault(); // zapobiega blur zanim kliknie
+                                            setModel(model.id);
+                                            setModelName(model.model.toUpperCase());
+                                            setDropdownVisible(false);
+                                        }}
+                                        >
+                                        {model.model}
+                                        </a>
+                                    </li>
                                     ))}
-                                </select>
+                                </ul>
+                            </div>
                             </td>
+
                         </tr>
                         <tr>
                             <td>{text['registration']}</td>
-                            <td><input type="text" value={registration} onChange={(e) => setRegistration(e.target.value.toUpperCase())} className="form-control"></input></td>
+                            <td><input type="text" value={registration} placeholder={text['chooseRegistration']} onChange={(e) => setRegistration(e.target.value.toUpperCase())} className="form-control"></input></td>
                         </tr>
                         <tr>
                             <td>{text['owner']}</td>
-                            <td><input type="text" value={owner} onChange={(e) => setOwner(e.target.value.toUpperCase())} className="form-control"></input></td>
+                            <td><input type="text" value={owner} placeholder={text['chooseOwner']} onChange={(e) => setOwner(e.target.value.toUpperCase())} className="form-control"></input></td>
                         </tr>
                         <tr>
                             <td>{text['price']}</td>
-                            <td><input type="text" value={price} onChange={(e) => setPrice(e.target.value.toUpperCase())} className="form-control"></input></td>
+                            <td><input type="text" value={price} placeholder={text['choosePrice']} onChange={(e) => setPrice(e.target.value.toUpperCase())} className="form-control"></input></td>
+                        </tr>
+                        <tr>
+                            <td>{text['imageUrl']}</td>
+                            <td><input type="text" value={imageUrl} placeholder={text['chooseImageUrl']} onChange={(e) => setImageUrl(e.target.value.toLowerCase())} className="form-control"></input></td>
                         </tr>
                         <tr>
                             <td>{text['category']}</td>
