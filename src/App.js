@@ -13,6 +13,7 @@ import Footer from './components/footer';
 import AirplanesPage from './pages/authorized/airplanes/airplanesPage';
 import AddAirplanePage from './pages/authorized/airplanes/addAirplanePage';
 import languageStrings from './translationFile';
+import AirplaneDetailsPage from './pages/authorized/airplanes/airplaneDetailsPage';
 
 function App() {
   const [user, setUser] = React.useState(() => {
@@ -44,7 +45,8 @@ function App() {
     <Route name={pageNames['addFlight']} path="/addFlight" element={<AddFlightPage />} showInTopBar={false}/>,
     <Route name={pageNames['myLicenses']} path="/myLicense" element={<MyLicensePage />} showInTopBar={true}/>,  
     <Route name={pageNames['airplanes']} path="/airplanes" element={<AirplanesPage />} showInTopBar={true}/>,
-    <Route name={pageNames['addAirplane']} path="/addAirplane" element={<AddAirplanePage />} showInTopBar={false}/>
+    <Route name={pageNames['addAirplane']} path="/addAirplane" element={<AddAirplanePage />} showInTopBar={false}/>,
+    <Route name={pageNames['airplaneDetails']} path="/airplanes/:id" element={<AirplaneDetailsPage />} showInTopBar={false}/>
   ]
 
   return (

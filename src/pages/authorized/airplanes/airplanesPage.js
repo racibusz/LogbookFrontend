@@ -4,6 +4,7 @@ import languageStrings from "../../../translationFile";
 import { UserContext } from "../../../UserContext";
 import React from "react";
 import { airplanesEndpoint } from "../../../endpoints";
+import { Link } from "react-router-dom";
 function AirplanesPage(){
     const navigate = useNavigate();
     const {language, setLanguage} = React.useContext(UserContext)
@@ -29,6 +30,7 @@ function AirplanesPage(){
                 </div>
                 <div className="row border rounded m-2 p-3">
                     {airplanes.map((airplane, index)=>{
+                        console.log(airplane)
                         return(
                         <div className="col-md-3 p-2 d-flex flex-column align-items-center">
                             <h2>{airplane.registration}</h2>
@@ -36,7 +38,7 @@ function AirplanesPage(){
                                 <tbody>
                                     <tr>
                                         <td>{text['type']}</td>
-                                        <td>{airplane.model}</td>
+                                        <td>{airplane.type}</td>
                                     </tr>
                                     <tr>
                                         <td>{text['registration']}</td>
@@ -52,7 +54,10 @@ function AirplanesPage(){
                                     </tr>
                                     <tr>
                                         <td>{text['category']}</td>
-                                        <td>{airplane.category}</td>
+                                        <td>{airplane.model.category}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><Link to={"/airplanes/"+airplane.id}>{text['details']}</Link></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -60,7 +65,7 @@ function AirplanesPage(){
                         )
                     })}
 
-                                        <div className="col-md-3 p-2 d-flex flex-column align-items-center justify-content-center position-relative bg-light" style={{ minHeight: '120px' }}
+                        <div className="col-md-3 p-2 d-flex flex-column align-items-center justify-content-center position-relative bg-light" style={{ minHeight: '120px' }}
                         onClick={() => navigate('/addAirplane')}>
                         <div
                             className="overlay d-flex justify-content-center align-items-center rounded"

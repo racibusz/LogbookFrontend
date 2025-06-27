@@ -4,7 +4,7 @@ import { UserContext } from "../UserContext";
 import { logoutEndpoint } from '../endpoints';
 function Footer(routes) {
     return(
-        <footer className='bg-dark text-white p-3'>
+        <footer className='bg-dark text-white p-3 mt-3'>
             <div className='row'>
                 <div className='col-md-2 border-end border-secondary m-1'>
                     <nav className='navbar-dark'>

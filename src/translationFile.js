@@ -8,7 +8,8 @@ const languageStrings = {
             'addFlight': 'Add flight',
             'myLicenses': 'My licenses',
             'airplanes': 'Airplanes',
-            'addAirplane': 'Add airplane'
+            'addAirplane': 'Add airplane',
+            'airplaneDetails': 'Airplane details',
         },
         "topBar":{
             "logout": "Logout",
@@ -52,8 +53,20 @@ const languageStrings = {
             "price": "Price per hour",
             "category": "Category",
             "addAirplane":"Add airplane",
-            "addAirplaneParagraph": "To do this, fill the form below."
-        }
+            "addAirplaneParagraph": "To do this, fill the form below.",
+            'details': "Details",
+            "model": "Model",
+            "chooseModel": "Choose model",
+        },
+        "airplaneDetailsPage":{
+            "type": "Type",
+            "registration": "Registration",
+            "owner": "Owner",
+            "pricePerHour": "Price per hour",
+            "category": "Category",
+            "image": "Image URL:",
+            "model": "Model",
+        },
     },
     "pl":{
         "":"",
